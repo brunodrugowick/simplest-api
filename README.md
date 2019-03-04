@@ -13,7 +13,7 @@ You should access or call `http://localhost:8080`. You can append the following 
 * `/sum`
 * `/subtract`
 * `/divide`
-* `multiple`
+* `/multiply`
 
 All operations take two integers `a` and `b` and return an integer as a result of the operation.
 

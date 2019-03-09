@@ -35,4 +35,6 @@ Transfer-Encoding: chunked
 In your browser you can access [http://localhost:8080/calc?a=5&b=15&operation=subtract](http://localhost:8080/calc?a=5&b=15&operation=subtract) and you'll get the response above.
 
 ## Testing
-You can use `test.sh` to test. I keep a `watch -n 5 ./test.sh` running on the terminal, which I quickly change to `./test.sh <argument 1> <argument 2>` to test specific values for the supported operations. 
+You can use `test.sh` to test. I keep a `watch -n 5 ./test.sh` running on the terminal, which I quickly change to `./test.sh <argument 1> <argument 2>` to test specific values for the supported operations.
+
+The script uses [HTTPie](https://httpie.org/). 

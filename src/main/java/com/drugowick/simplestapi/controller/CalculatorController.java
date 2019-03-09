@@ -27,7 +27,6 @@ public class CalculatorController {
     }
 
     @RequestMapping(value = "/calc", method = {RequestMethod.POST, RequestMethod.GET}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ResponseStatus(HttpStatus.OK)
     public ResponseEntity calc(
             @RequestParam int a,
             @RequestParam int b,

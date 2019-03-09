@@ -33,12 +33,18 @@ public class CalculatorController {
             @RequestParam int b,
             @RequestParam(required = false, defaultValue = "sum") String operation)
     {
+        //TODO Should operations be performed on the controller?
+        //TODO Division by zero is possible. Throws internal server error (500).
+        int operationResult;
         switch (operation) {
-            case "sum":         return ResponseEntity.status(HttpStatus.OK).body(new Response(a, "sum", b, a+b));
-            case "subtract":    return ResponseEntity.status(HttpStatus.OK).body(new Response(a, "subtract", b, a-b));
-            case "multiply":    return ResponseEntity.status(HttpStatus.OK).body(new Response(a, "multiply", b, a*b));
-            case "divide":      return ResponseEntity.status(HttpStatus.OK).body(new Response(a, "divide", b, a/b));
-            default:            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiError ("Unsupported operation.", "Valid operations are sum, subtract, multiply and divide."));
+            case "sum":         operationResult = a+b; break;
+            case "subtract":    operationResult = a-b; break;
+            case "multiply":    operationResult = a*b; break;
+            case "divide":      operationResult = a/b; break;
+            default:            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                                    .body(new ApiError ("Unsupported operation.", "Valid operations are sum, subtract, multiply and divide."));
         }
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new Response(a, operation, b, operationResult));
     }
 }

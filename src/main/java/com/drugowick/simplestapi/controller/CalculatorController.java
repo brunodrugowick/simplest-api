@@ -1,9 +1,10 @@
 package com.drugowick.simplestapi.controller;
 
 import lombok.Data;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class CalculatorController {
@@ -13,36 +14,31 @@ public class CalculatorController {
      */
     @Data
     public class Response {
-        private int a;
-        private String operation;
-        private int b;
-        private int result;
-        private String error;
-
-        public Response(String error) {
-            this.error = error;
-        }
-
-        public Response(int a, String operation, int b, int result) {
-            this.a = a;
-            this.operation = operation;
-            this.b = b;
-            this.result = result;
-        }
+        private final int a;
+        private final String operation;
+        private final int b;
+        private final int result;
     }
 
-    @RequestMapping("/calc")
-    public Response calc(
+    @Data
+    public class ApiError {
+        private final String error;
+        private final String advice;
+    }
+
+    @RequestMapping(value = "/calc", method = {RequestMethod.POST, RequestMethod.GET}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity calc(
             @RequestParam int a,
             @RequestParam int b,
             @RequestParam(required = false, defaultValue = "sum") String operation)
     {
         switch (operation) {
-            case "sum": return new Response(a, "sum", b, a+b);
-            case "subtract": return new Response(a, "subtract", b, a-b);
-            case "multiply": return new Response(a, "multiply", b, a*b);
-            case "divide": return new Response(a, "divide", b, a/b);
-            default: return new Response("Valid operations are sum (default), subtract, multiply or divide.");
+            case "sum":         return ResponseEntity.status(HttpStatus.OK).body(new Response(a, "sum", b, a+b));
+            case "subtract":    return ResponseEntity.status(HttpStatus.OK).body(new Response(a, "subtract", b, a-b));
+            case "multiply":    return ResponseEntity.status(HttpStatus.OK).body(new Response(a, "multiply", b, a*b));
+            case "divide":      return ResponseEntity.status(HttpStatus.OK).body(new Response(a, "divide", b, a/b));
+            default:            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiError ("Unsupported operation.", "Valid operations are sum, subtract, multiply and divide."));
         }
     }
 }
